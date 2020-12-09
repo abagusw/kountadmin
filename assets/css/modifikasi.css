@@ -1,0 +1,75 @@
+:root {
+    --color-primary: #4f7cac;
+    --color-primary-lighten: #588abe;
+    --color-primary-darken: #3f6c9c;
+    --color-secondary: #449353;
+    --color-secondary-darken: #388647;
+    --color-secondary-lighten: #b5ddbd;
+    --color-gray: #eeeeee;
+    --color-gray-lighten: #f5f5f5;
+    --color-gray-darken: #ddd;
+    --border-rounded: 2rem;
+}
+
+.text-link {
+    color: var(--color-primary-lighten);
+}
+
+.text-link:hover {
+    color: var(--color-primary-darken);
+}
+
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
+.text-gray {
+    color: #555;
+}
+
+.btn-simpan {
+    background-color: var(--color-primary) !important;
+}
+
+.btn-simpan:hover {
+    background-color: var(--color-primary-darken) !important;
+}
+
+.bg-primary-gradient {
+    background: linear-gradient(to top, var(--color-gray-darken), var(--color-gray));
+}
+
+.border-rounded {
+    border-radius: var(--border-rounded);
+}
+
+.sidenav-toggle::after {
+    -webkit-transform: translateY(-50%) rotate(-135deg);
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+.bg-grad {
+    background: linear-gradient(to bottom, var(--color-primary-lighten), var(--color-primary-darken));
+}
+
+.sidenav.bg-menu {
+    background-color: transparent !important;
+}
+
+.sidenav.bg-menu .sidenav-item.active>.sidenav-link:not(.sidenav-toggle) {
+    background-color: #f5f5f5;
+}
+
+.sidenav.bg-menu .sidenav-link,
+.sidenav.bg-menu .sidenav-horizontal-prev,
+.sidenav.bg-menu .sidenav-horizontal-next {
+    color: #dddddd;
+}
+
+.sidenav.bg-menu .sidenav-item.open:not(.sidenav-item-closing)>.sidenav-toggle {
+    color: #ddd;
+}
+
+.sidenav.bg-menu .sidenav-item.active>.sidenav-link {
+    color: #4675a6;
+}
