@@ -1,5 +1,5 @@
 @extends('layouts.backend')
-@section('pageTitle', "Manajemen Positions | $perusahaan->nama")
+@section('pageTitle', "Manajemen Hierarchy | $perusahaan->nama")
 @push('stylesheets')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/users.css')}}">
 @endpush
@@ -12,13 +12,13 @@
         <a href="{{route('manage.beranda')}}">Beranda</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{route('positions.index')}}">Positions</a>
+        <a href="{{route('hierarchy.index')}}">Hierarchy</a>
       </li>
-      <li class="breadcrumb-item active">{{isset($positions) ? 'Edit' : 'Tambah'}} </li>
+      <li class="breadcrumb-item active">{{isset($hierarchy) ? 'Edit' : 'Tambah'}} </li>
     </ol>
 
     <h4 class="font-weight-bold py-3 mb-4">
-    {{isset($positions) ? 'Edit' : 'Tambah'}}  <span class="text-muted">Positions</span>
+    {{isset($hierarchy) ? 'Edit' : 'Tambah'}}  <span class="text-muted">Hierarchy</span>
     </h4>
 
     @if(session('message'))
@@ -34,16 +34,45 @@
         <div class="card-body pb-2">
           <form class="form-horizontal" id="submitData">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="enc_id" id="enc_id" value="{{isset($positions)? $enc_id : ''}}">
+            <input type="hidden" name="enc_id" id="enc_id" value="{{isset($hierarchy)? $enc_id : ''}}">
 
             <br/>
             <hr class="border-light m-0">
             <br/>
+            
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label class="form-label">Position<span>*</span></label>
+                <select id="position_id" name="position_id" class="select2 form-control mb-1 obat-select">
+                  <option value="0" selected disabled>Select Position</option>
+                  @foreach($positions as $position)
+                  <option value="{{$position->id}}"
+                    @if(isset($hierarchy))
+                    @if($hierarchy->position_id == $position->id) 
+                    selected 
+                    @endif 
+                    @endif
+                    >{{$position->position_name}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
 
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label class="form-label">Position Name<span>*</span></label>
-                <input type="text" class="form-control mb-1" name="position_name" id="position_name" value="{{isset($positions)? $positions->position_name : ''}}">
+                <label class="form-label">Perent Position<span></span></label>
+                <select id="parent_position_id" name="parent_position_id" class="select2 form-control mb-1 obat-select">
+                  <option value="1" selected>This position, is parent</option>
+                  @foreach($positions as $position)
+                  <option value="{{$position->id}}"
+                    @if(isset($hierarchy))
+                    @if($hierarchy->parent_position_id == $position->id) 
+                    selected 
+                    @endif 
+                    @endif
+                    >{{$position->position_name}}</option>
+                  @endforeach
+                </select>
               </div>
             </div>
 
@@ -51,7 +80,7 @@
               <div class="form-group col-md-12">
                 <div class="text-right mt-3">
                   <button type="submit" class="btn btn-simpan" id="simpan">Simpan</button>&nbsp;
-                  <a href="{{route('positions.index')}}"  class="btn btn-default">Kembali</a>
+                  <a href="{{route('hierarchy.index')}}"  class="btn btn-default">Kembali</a>
                 </div>
               </div>
             </div>
@@ -142,10 +171,10 @@
     },
     messages: {
       title: {
-        required: "Judul Positions tidak boleh kosong"
+        required: "Judul Hierarchy tidak boleh kosong"
       },
       description: {
-        required: "Deskripsi positions tidak boleh kosong",
+        required: "Deskripsi hierarchy tidak boleh kosong",
       }
     },
     errorElement: 'span',
@@ -166,21 +195,12 @@
   });
    function SimpanData(){
         $('#simpan').addClass("disabled");
-         var enc_id         =$('#enc_id').val();
-         var position_name          =$('#position_name').val();
-
-         var dataFile = new FormData()
-
-         dataFile.append('enc_id', enc_id);
-         dataFile.append('position_name', position_name);
 
         $.ajax({
           type: 'POST',
-          url : "{{route('positions.simpan')}}",
+          url : "{{route('hierarchy.simpan')}}",
           headers: {'X-CSRF-TOKEN': $('[name="_token"]').val()},
-          data:dataFile,
-          processData: false,
-          contentType: false,
+          data: $('#submitData').serialize(),
           dataType: "json",
           beforeSend: function () {
               $('#Loading').modal('show');
@@ -189,7 +209,7 @@
             if (data.success) {
                Swal.fire('Yes',data.message,'success');
                setTimeout(function(){ 
-                 window.location.href = '{{ route('positions.index') }}'; 
+                 window.location.href = '{{ route('hierarchy.index') }}'; 
                 }, 3000);
             } else {
                Swal.fire('Ups',data.message,'info');

@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employees;
+use App\Models\EmployeeGoals;
 use App\Models\Positions;
-use App\Models\Hierarchy;
 
 
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use DB;
+use Illuminate\Support\Facades\Hash;
 
-class PositionsController extends Controller
+class EmployeesController extends Controller
 {
-    public function url_positions()
+    public function url_employees()
     {
-        $x = env('APP_URL') . '/positions';
+        $x = env('APP_URL') . '/employees';
         return $x;
     }
     protected $original_column = array(
@@ -28,10 +30,15 @@ class PositionsController extends Controller
         return $value;
     }
 
+    public function positions()
+    {
+        $positions = Positions::where('id', '!=', 1)->get();
+        return $positions;
+    }
 
     public function index()
     {
-        return view('backend/positions/index');
+        return view('backend/employees/index');
     }
 
     public function getData(Request $request)
@@ -41,7 +48,7 @@ class PositionsController extends Controller
         $page  = $start + 1;
         $search = $request->search['value'];
 
-        $records = Positions::select('*')->where('id', '!=', 1);
+        $records = Employees::select('*');
 
         //   if(array_key_exists($request->order[0]['column'], $this->original_column)){
         //      $records->orderByRaw($this->original_column[$request->order[0]['column']].' '.$request->order[0]['dir']);
@@ -51,7 +58,7 @@ class PositionsController extends Controller
         //   }
         if ($search) {
             $records->where(function ($query) use ($search) {
-                $query->orWhere('position_name', 'LIKE', "%{$search}%");
+                $query->orWhere('username', 'LIKE', "%{$search}%");
             });
         }
         $totalData = $records->get()->count();
@@ -67,18 +74,19 @@ class PositionsController extends Controller
 
             $action .= "";
 
-            if ($request->user()->can('positions.ubah')) {
-                $action .= '<a href="' . route('positions.ubah', $enc_id) . '" class="btn btn-warning btn-xs icon-btn md-btn-flat product-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>&nbsp;';
+            if ($request->user()->can('employees.ubah')) {
+                $action .= '<a href="' . route('employees.ubah', $enc_id) . '" class="btn btn-warning btn-xs icon-btn md-btn-flat product-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>&nbsp;';
             }
-            if ($request->user()->can('positions.hapus')) {
+            if ($request->user()->can('employees.hapus')) {
                 $action .= '<a href="#" onclick="deleteData(this,\'' . $enc_id . '\')" class="btn btn-danger btn-xs icon-btn md-btn-flat product-tooltip" title="Hapus"><i class="ion ion-md-close"></i></a>&nbsp;';
             }
 
             $record->no             = $key + $page;
-            // $record->url            = '<a href="'.$this->url_positions().'/'.$record->slug_url.'" target="_blank">'.$this->url_positions().'/'.$record->slug_url.'</a>';
+            // $record->url            = '<a href="'.$this->url_employees().'/'.$record->slug_url.'" target="_blank">'.$this->url_employees().'/'.$record->slug_url.'</a>';
             $record->action         = $action;
+            $record->position         = Positions::select('position_name')->where('id',$record->position_id)->first()->position_name;
         }
-        if ($request->user()->can('positions.index')) {
+        if ($request->user()->can('employees.index')) {
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
                 "recordsTotal"    => intval($totalData),
@@ -110,7 +118,8 @@ class PositionsController extends Controller
     {
         $status = $this->status();
         $selectedstatus = "1";
-        return view('backend/positions/form', compact('status', 'selectedstatus'));
+        $positions = $this->positions();
+        return view('backend/employees/form', compact('status', 'selectedstatus', 'positions'));
     }
 
 
@@ -118,12 +127,13 @@ class PositionsController extends Controller
     {
         $dec_id = $this->safe_decode(Crypt::decryptString($enc_id));
         if ($dec_id) {
-            $positions = Positions::find($dec_id);
+            $employees = Employees::find($dec_id);
             $status = $this->status();
-            $selectedstatus = $positions->status;
+            $selectedstatus = $employees->status;
+            $positions = $this->positions();
 
 
-            return view('backend/positions/form', compact('enc_id', 'positions', 'status', 'selectedstatus'));
+            return view('backend/employees/form', compact('enc_id', 'employees', 'status', 'selectedstatus', 'positions'));
         } else {
             return view('errors/noaccess');
         }
@@ -141,9 +151,13 @@ class PositionsController extends Controller
         }
 
         if ($enc_id) {
-            $data = Positions::find($dec_id);
+            $data = Employees::find($dec_id);
 
-            $data->position_name       = $req->position_name;
+            $data->username       = $req->username;
+            $data->password       = Hash::make($req->password);
+            $data->fullname       = $req->fullname;
+            $data->image_profile       = $req->image_profile;
+            $data->position_id       = $req->position_id;
             $data->save();
 
             if ($data) {
@@ -158,9 +172,13 @@ class PositionsController extends Controller
                 );
             }
         } else {
-            $data = new Positions;
+            $data = new Employees;
 
-            $data->position_name            = $req->position_name;
+            $data->username       = $req->username;
+            $data->password       = Hash::make($req->password);
+            $data->fullname       = $req->fullname;
+            $data->image_profile       = $req->image_profile;
+            $data->position_id       = $req->position_id;
             $data->save();
             if ($data) {
                 $json_data = array(
@@ -180,13 +198,13 @@ class PositionsController extends Controller
     public function hapus(Request $req, $enc_id)
     {
         $dec_id = $this->safe_decode(Crypt::decryptString($enc_id));
-        $positions = Positions::find($dec_id);
-        $hierarchy = Hierarchy::where('position_id',$dec_id)->get();
-        if($hierarchy){
-            return response()->json(['status' => "failed", 'message' => 'Data dipakai di hierarchy, tidak dapat dihapus']);
+        $employees = Employees::find($dec_id);
+        $employeeGoals = EmployeeGoals::where('employee_id',$dec_id)->get();
+        if($employeeGoals){
+            return response()->json(['status' => "failed", 'message' => 'Data dipakai di employee goals, tidak dapat dihapus']);
         }else{
-            if ($positions) {
-                $positions->delete();
+            if ($employees) {
+                $employees->delete();
                 return response()->json(['status' => "success", 'message' => 'Data berhasil dihapus.']);
             } else {
                 return response()->json(['status' => "failed", 'message' => 'Gagal menghapus data']);

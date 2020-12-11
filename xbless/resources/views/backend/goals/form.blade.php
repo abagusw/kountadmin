@@ -212,8 +212,10 @@
           },
           success: function(data){
             if (data.success) {
-               Swal.fire('Yes',data.message,'info');
-               window.location.reload();
+               Swal.fire('Yes',data.message,'success');
+               setTimeout(function(){ 
+               window.location.href = '{{ route('goals.index') }}';
+                }, 3000);
             } else {
                Swal.fire('Ups',data.message,'info');
             }

@@ -25,6 +25,20 @@
         </a>
       </li>
       @endcan
+      @can('employees.index')     
+      <li class="sidenav-item">
+        <a href="{{route('employees.index')}}"  class="sidenav-link">
+          <div>Employees</div>
+        </a>
+      </li>
+      @endcan
+      @can('hierarchy.index')     
+      <li class="sidenav-item">
+        <a href="{{route('hierarchy.index')}}"  class="sidenav-link">
+          <div>Hierarchy</div>
+        </a>
+      </li>
+      @endcan
     </ul>
   </li>
   @endcan

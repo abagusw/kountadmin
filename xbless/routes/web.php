@@ -8,6 +8,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\GoalsController;
+use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\HierarchyController;
 use App\Http\Controllers\RoleController;
 
 
@@ -80,6 +82,20 @@ Route::group(['middleware' => ['auth', 'acl:web']], function () {
     Route::get('manage/goals/tambah', [GoalsController::class, 'tambah'])->name('goals.tambah');
     Route::get('manage/goals/ubah/{id}', [GoalsController::class, 'ubah'])->name('goals.ubah');
     Route::post('manage/goals/simpan/{id?}', [GoalsController::class, 'simpan'])->name('goals.simpan');
+
+    //EMPLOYEES
+    Route::get('manage/employees', [EmployeesController::class, 'index'])->name('employees.index');
+    Route::post('manage/employees/getdata', [EmployeesController::class, 'getData'])->name('employees.getdata');
+    Route::get('manage/employees/tambah', [EmployeesController::class, 'tambah'])->name('employees.tambah');
+    Route::get('manage/employees/ubah/{id}', [EmployeesController::class, 'ubah'])->name('employees.ubah');
+    Route::post('manage/employees/simpan/{id?}', [EmployeesController::class, 'simpan'])->name('employees.simpan');
+    
+    //HIERARCHY
+    Route::get('manage/hierarchy', [HierarchyController::class, 'index'])->name('hierarchy.index');
+    Route::post('manage/hierarchy/getdata', [HierarchyController::class, 'getData'])->name('hierarchy.getdata');
+    Route::get('manage/hierarchy/tambah', [HierarchyController::class, 'tambah'])->name('hierarchy.tambah');
+    Route::get('manage/hierarchy/ubah/{id}', [HierarchyController::class, 'ubah'])->name('hierarchy.ubah');
+    Route::post('manage/hierarchy/simpan/{id?}', [HierarchyController::class, 'simpan'])->name('hierarchy.simpan');
 
   
 });
