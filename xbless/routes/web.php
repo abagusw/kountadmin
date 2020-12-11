@@ -6,6 +6,8 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\StaffController;
 
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PositionsController;
+use App\Http\Controllers\GoalsController;
 use App\Http\Controllers\RoleController;
 
 
@@ -21,7 +23,7 @@ use App\Http\Controllers\RoleController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('manage.beranda');
 });
 
 Route::get('/manage/login', [LoginController::class, 'index'])->name('manage.login');
@@ -64,6 +66,20 @@ Route::group(['middleware' => ['auth', 'acl:web']], function () {
     Route::post('manage/profil/simpan', [StaffController::class, 'profilSimpan'])->name('profil.simpan');
     Route::get('manage/newpassword', [StaffController::class, 'profilPassword'])->name('profil.password');
     Route::post('manage/password/simpan', [StaffController::class, 'profilNewPassword'])->name('profil.simpanpassword');
+
+    //POSITIONS
+    Route::get('manage/positions', [PositionsController::class, 'index'])->name('positions.index');
+    Route::post('manage/positions/getdata', [PositionsController::class, 'getData'])->name('positions.getdata');
+    Route::get('manage/positions/tambah', [PositionsController::class, 'tambah'])->name('positions.tambah');
+    Route::get('manage/positions/ubah/{id}', [PositionsController::class, 'ubah'])->name('positions.ubah');
+    Route::post('manage/positions/simpan/{id?}', [PositionsController::class, 'simpan'])->name('positions.simpan');
+
+    //GOALS
+    Route::get('manage/goals', [GoalsController::class, 'index'])->name('goals.index');
+    Route::post('manage/goals/getdata', [GoalsController::class, 'getData'])->name('goals.getdata');
+    Route::get('manage/goals/tambah', [GoalsController::class, 'tambah'])->name('goals.tambah');
+    Route::get('manage/goals/ubah/{id}', [GoalsController::class, 'ubah'])->name('goals.ubah');
+    Route::post('manage/goals/simpan/{id?}', [GoalsController::class, 'simpan'])->name('goals.simpan');
 
   
 });

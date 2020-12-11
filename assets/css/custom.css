@@ -94,12 +94,12 @@
 /*Tombol Tambah*/
 .btn-tambah {
     border-color: rgba(0, 0, 0, 0);
-    background: #ed4626;
+    background: var(--color-secondary);
     color: #fff;
 }
 .btn-tambah:hover {
     border-color: rgba(0, 0, 0, 0);
-    background: #B3290E;
+    background: var(--color-primary-lighten);
     color: #fff
 }
 
@@ -111,12 +111,12 @@
 /*Tombol Simpan*/
 .btn-simpan {
     border-color: rgba(0, 0, 0, 0);
-    background: #ed4626;
+    background: var(--color-secondary);
     color: #fff;
 }
 .btn-simpan:hover {
     border-color: rgba(0, 0, 0, 0);
-    background: #B3290E;
+    background: var(--color-primary-lighten);
     color: #fff
 }
 
@@ -141,16 +141,16 @@
     box-shadow: 0 0 0 2px rgba(136, 151, 170, 0.4)
 }
 .badge-primary {
-    background-color: #ed4626;
+    background-color: var(--color-secondary);
     color: #fff;
 }
 .bg-background {
-    background-color: #ed4626 !important;
+    background-color: var(--color-secondary) !important;
     color: #cbf1e3
 }
 .bg-background:hover {
     border-color: rgba(0, 0, 0, 0);
-    background: #B3290E;
+    background: var(--color-secondary);
     color: #fff
 }
 .btn-background:focus,
@@ -199,13 +199,13 @@ a:hover {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #ed4626;
-    border-color: #ed4626;
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
 }
 .dropdown-item.active, .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #ed4626;
+    background-color: var(--color-secondary);
 }
 .ui-w-400 {
     width: 400px !important;

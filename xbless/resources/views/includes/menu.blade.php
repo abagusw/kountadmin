@@ -10,12 +10,21 @@
     <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-albums"></i>
       <div>Master</div>
     </a>
-    <ul class="sidenav-menu">        
+    <ul class="sidenav-menu">   
+      @can('positions.index')     
       <li class="sidenav-item">
-        <a href="#"  class="sidenav-link">
-          <div>Testing</div>
+        <a href="{{route('positions.index')}}"  class="sidenav-link">
+          <div>Positions</div>
         </a>
       </li>
+      @endcan
+      @can('goals.index')     
+      <li class="sidenav-item">
+        <a href="{{route('goals.index')}}"  class="sidenav-link">
+          <div>Goals</div>
+        </a>
+      </li>
+      @endcan
     </ul>
   </li>
   @endcan

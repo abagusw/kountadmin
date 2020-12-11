@@ -36,7 +36,7 @@
     </div>
     <div class="authentication-wrapper authentication-3">
         <div class="authentication-inner justify-content-center">
-            <div class="d-none d-lg-flex col-lg-7 mt-5 ui-bg-cover ui-bg-overlay-container p-5" style="background: url('{{ asset('assets/bg/bg-antri.svg') }}') no-repeat; background-position:bottom; background-size:85%;" alt='<a href=" http://www.freepik.com">Designed by pch.vector / Freepik</a>'>
+            <div class="d-none d-lg-flex col-lg-7 mt-5 ui-bg-cover ui-bg-overlay-container p-5" style="background: url('{{ asset('assets/bg/kount.jpg') }}') no-repeat; background-position:bottom; background-size:85%;" alt="<a href='https://www.freepik.com/vectors/infographic'>Infographic vector created by katemangostar - www.freepik.com</a>">
                 {{-- <div class="ui-bg-overlay bg-dark opacity-50"></div> --}}
                 <div class="w-100 text-white px-5">
                     <h1 class="display-2 text-gray font-weight-bolder mb-4">KOUNT</h1>
