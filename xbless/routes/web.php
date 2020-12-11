@@ -1,16 +1,17 @@
 <?php
-
+//default
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\StaffController;
-
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+//Additional
 use App\Http\Controllers\PositionsController;
 use App\Http\Controllers\GoalsController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\HierarchyController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\EmployeeGoalsController;
 
 
 /*
@@ -96,6 +97,13 @@ Route::group(['middleware' => ['auth', 'acl:web']], function () {
     Route::get('manage/hierarchy/tambah', [HierarchyController::class, 'tambah'])->name('hierarchy.tambah');
     Route::get('manage/hierarchy/ubah/{id}', [HierarchyController::class, 'ubah'])->name('hierarchy.ubah');
     Route::post('manage/hierarchy/simpan/{id?}', [HierarchyController::class, 'simpan'])->name('hierarchy.simpan');
+
+    //EMPLOYEE_GOALS
+    Route::get('manage/employee_goals', [EmployeeGoalsController::class, 'index'])->name('employee_goals.index');
+    Route::post('manage/employee_goals/getdata', [EmployeeGoalsController::class, 'getData'])->name('employee_goals.getdata');
+    Route::get('manage/employee_goals/tambah', [EmployeeGoalsController::class, 'tambah'])->name('employee_goals.tambah');
+    Route::get('manage/employee_goals/ubah/{id}', [EmployeeGoalsController::class, 'ubah'])->name('employee_goals.ubah');
+    Route::post('manage/employee_goals/simpan/{id?}', [EmployeeGoalsController::class, 'simpan'])->name('employee_goals.simpan');
 
   
 });

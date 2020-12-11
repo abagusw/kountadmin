@@ -16,3 +16,10 @@ INSERT INTO `permissions` (`name`, `slug`, `nested`, `icon`, `asmenu`) VALUES
 ('Hierarchy Get Data', 'hierarchy.getdata', '4.4.2', 'fa-file', 0),
 ('Hierarchy Ubah', 'hierarchy.ubah', '4.4.3', 'fa-file', 0),
 ('Hierarchy Simpan', 'hierarchy.simpan', '4.4.4', 'fa-file', 0);
+INSERT INTO `permissions` (`name`, `slug`, `nested`, `icon`, `asmenu`) VALUES
+('Content', 'content.index', '5', 'fa-file', 1),
+('Employee Goals', 'employee_goals.index', '5.1', 'fa-file', 0),
+('Employee Goals Tambah', 'employee_goals.tambah', '5.1.1', 'fa-pen', 0),
+('Employee Goals Get Data', 'employee_goals.getdata', '5.1.2', 'fa-file', 0),
+('Employee Goals Ubah', 'employee_goals.ubah', '5.1.3', 'fa-file', 0),
+('Employee Goals Simpan', 'employee_goals.simpan', '5.1.4', 'fa-file', 0);

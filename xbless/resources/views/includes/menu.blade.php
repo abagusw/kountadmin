@@ -42,6 +42,23 @@
     </ul>
   </li>
   @endcan
+
+  @can('content.index')
+  <li class="sidenav-item">
+    <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-albums"></i>
+      <div>Contents</div>
+    </a>
+    <ul class="sidenav-menu">   
+      @can('employee_goals.index')     
+      <li class="sidenav-item">
+        <a href="{{route('employee_goals.index')}}"  class="sidenav-link">
+          <div>Employee Goals</div>
+        </a>
+      </li>
+      @endcan
+    </ul>
+  </li>
+  @endcan
   
   @can('pengguna.index')
   <li class="sidenav-item">
